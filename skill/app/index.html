@@ -1,1 +1,143 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Local Flavor Finder</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f8f1ea;
+      margin: 0;
+      padding: 40px;
+      text-align: center;
+    }
 
+    .container {
+      max-width: 650px;
+      margin: auto;
+      background: #ffffff;
+      padding: 35px;
+      border-radius: 20px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+    }
+
+    h1 {
+      color: #6b4f3f;
+      margin-bottom: 5px;
+    }
+
+    h2 {
+      color: #8b5e3c;
+      font-size: 20px;
+      margin-bottom: 25px;
+    }
+
+    p {
+      color: #5c4a3f;
+      font-weight: bold;
+    }
+
+    input {
+      width: 85%;
+      padding: 12px;
+      margin: 10px 0;
+      border: 1px solid #d7c4b5;
+      border-radius: 10px;
+      font-size: 16px;
+    }
+
+    button {
+      margin-top: 20px;
+      padding: 12px 25px;
+      background: #8b5e3c;
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #6b4f3f;
+    }
+
+    #result {
+      margin-top: 30px;
+      text-align: left;
+      background: #fff7f0;
+      padding: 20px;
+      border-radius: 15px;
+      display: none;
+    }
+
+    a {
+      display: block;
+      margin: 12px 0;
+      color: #8b5e3c;
+      font-weight: bold;
+      text-decoration: none;
+    }
+
+    .note {
+      font-size: 14px;
+      color: #6b4f3f;
+      line-height: 1.6;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1>☕ Local Flavor Finder</h1>
+    <h2>在地特色咖啡甜點推薦師</h2>
+
+    <p>請輸入目前所在縣市</p>
+    <input id="city" placeholder="例如：嘉義市、南投縣、台南市">
+
+    <p>請輸入想找的關鍵詞</p>
+    <input id="keyword" placeholder="例如：特色咖啡廳、甜點店、老宅咖啡">
+
+    <br>
+    <button onclick="searchPlace()">開始搜尋</button>
+
+    <div id="result"></div>
+  </div>
+
+  <script>
+    function searchPlace() {
+      const city = document.getElementById("city").value.trim();
+      const keyword = document.getElementById("keyword").value.trim();
+      const result = document.getElementById("result");
+
+      if (city === "" || keyword === "") {
+        result.style.display = "block";
+        result.innerHTML = "請先輸入縣市與關鍵詞。";
+        return;
+      }
+
+      const query = city + " " + keyword;
+
+      const googleMapsUrl =
+        "https://www.google.com/maps/search/?api=1&query=" +
+        encodeURIComponent(query);
+
+      const instagramTag =
+        city.replace("市", "").replace("縣", "") +
+        keyword.replace(/\s/g, "");
+
+      const instagramUrl =
+        "https://www.instagram.com/explore/tags/" +
+        encodeURIComponent(instagramTag);
+
+      result.style.display = "block";
+      result.innerHTML =
+        "<h3>🔍 搜尋結果建議</h3>" +
+        "<p>你正在搜尋：<strong>" + query + "</strong></p>" +
+        "<a href='" + googleMapsUrl + "' target='_blank'>📍 打開 Google Maps 搜尋附近店家</a>" +
+        "<a href='" + instagramUrl + "' target='_blank'>📸 打開 Instagram Hashtag 搜尋人氣照片</a>" +
+        "<p class='note'>本工具不虛構店家，而是協助使用者快速前往 Google Maps 與 Instagram 查找即時結果。實際距離、評價與營業時間請以平台顯示為準。</p>";
+    }
+  </script>
+</body>
+</html>
